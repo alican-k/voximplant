@@ -1,0 +1,38 @@
+{
+  "name": "VoxRnwithFirStarter",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "babel-jest": "23.6.0",
+    "fs-extra": "^6.0.1",
+    "jest": "23.6.0",
+    "metro-react-native-babel-preset": "0.48.0",
+    "react-test-renderer": "16.5.0",
+    "replace-in-file": "^3.4.0"
+  },
+  "scripts": {
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "apk": "cd android && ./gradlew assembleRelease",
+    "rename": "node ./bin/rename.js",
+    "start": "react-native start",
+    "test": "jest"
+  },
+  "jest": {
+    "preset": "react-native"
+  },
+  "dependencies": {
+    "ramda": "^0.25.0",
+    "react": "16.5.0",
+    "react-native": "0.57.1",
+    "react-native-firebase": "^5.0.0",
+    "react-native-notifications": "^1.1.20",
+    "react-native-voximplant": "^1.2.0",
+    "react-redux": "^5.0.7",
+    "recompose": "^0.30.0",
+    "redux": "^4.0.1",
+    "redux-devtools-extension": "^2.13.5",
+    "redux-observable": "^0.18.0",
+    "rxjs": "^5.5.11"
+  }
+}
