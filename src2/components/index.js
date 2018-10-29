@@ -3,12 +3,12 @@ import { Text, View, TouchableOpacity, StyleSheet } from 'react-native'
 import { connect } from 'react-redux'
 import { compose, withProps, withHandlers } from 'recompose'
 import { main } from '../helpers/state'
-import { callUserRequest, callHangupRequest, callAnswer, disconnect, loginAs } from '../actions'
+import { callUserRequest, callHangupRequest, callAnswer, disconnect, loginAs, displayLocalNotification } from '../actions'
 import users from '../helpers/users'
 
 const Comp = ({ 
 	voxClientState, displayName, isLoggedIn, isClosed, call, totalCallState, actionState, 
-	_callUserRequest, _callHangupRequest, _callAnswer, _disconnect, loginAs
+	_callUserRequest, _callHangupRequest, _callAnswer, _disconnect, loginAs, _displayLocalNotification
  }) =>
 	<View style={styles.container}>
 		<View>
@@ -59,17 +59,29 @@ const Comp = ({
 			</View>
 		)}
 
-		{ isLoggedIn && <Text>Call State: {totalCallState}</Text> }
+		{ isLoggedIn && <Text>Call State: {totalCallState}.</Text> }
+
+		<TouchableOpacity style={styles.call} onPress={_displayLocalNotification}>
+			<Text>Display local? notification</Text>
+		</TouchableOpacity>
 	</View>
 	
 export default compose(
-	connect(main.self, { callUserRequest, callHangupRequest, callAnswer, disconnect, loginAs }),
+	connect(main.self, { callUserRequest, callHangupRequest, callAnswer, disconnect, loginAs, displayLocalNotification }),
 	withProps(main.pick(['voxClientState', 'displayName', 'isLoggedIn', 'totalCallState', 'call', 'actionState', 'isClosed'])),
 	withHandlers({
 		_callUserRequest: props => () => {props.callUserRequest(users.getCallee().userName)},
 		_callHangupRequest: props => () => props.callHangupRequest(),
 		_callAnswer: props => () => props.callAnswer(),
-		_disconnect: props => () => props.disconnect()		
+		_disconnect: props => () => props.disconnect(),
+		_displayLocalNotification: props => () => props.displayLocalNotification({
+			title: 'title', 
+			body: 'body', 
+			data: { 
+				key1: 'value1',
+				key2: 'value2',				
+			}
+		})
 	})
 )(Comp)
 	

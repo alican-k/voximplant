@@ -27,12 +27,15 @@
     "react-native": "0.57.1",
     "react-native-firebase": "^5.0.0",
     "react-native-notifications": "^1.1.20",
+    "react-native-sound": "^0.10.9",
     "react-native-voximplant": "^1.2.0",
+    "react-navigation": "^2.18.1",
     "react-redux": "^5.0.7",
     "recompose": "^0.30.0",
     "redux": "^4.0.1",
     "redux-devtools-extension": "^2.13.5",
     "redux-observable": "^0.18.0",
+    "rxfire": "^3.0.7",
     "rxjs": "^5.5.11"
   }
 }

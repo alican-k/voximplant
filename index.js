@@ -1,7 +1,7 @@
 import { AppRegistry, Platform } from 'react-native'
 import Index from './src/index'
 import {name as appName} from './app.json'
-import bgMessaging from './bgMessaging'
+//import bgMessaging from './bgMessaging'
 
 AppRegistry.registerComponent(appName, () => Index)
 
@@ -15,5 +15,5 @@ AppRegistry.registerComponent(appName, () => Index)
 
 // AppRegistry.registerComponent(appName, () => App)
 
-if(Platform.OS === 'android')
- 	AppRegistry.registerHeadlessTask('RNFirebaseBackgroundMessage', () => bgMessaging)
+// if(Platform.OS === 'android')
+//  	AppRegistry.registerHeadlessTask('RNFirebaseBackgroundMessage', () => bgMessaging)

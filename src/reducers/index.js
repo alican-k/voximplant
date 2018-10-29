@@ -1,6 +1,12 @@
 import { combineReducers } from 'redux'
-import main from './main'
+import auth from './auth'
+import profile from './profile'
+import vox from './vox'
+import call from './call'
 
 export default combineReducers({
-	main
+	auth,
+	profile,
+	vox,
+	call
 })

@@ -1,17 +1,20 @@
 import { Observable } from 'rxjs/Observable'
 import { Voximplant } from 'react-native-voximplant'
 import firebase from 'react-native-firebase'
-import { PermissionsAndroid } from 'react-native'
+import { PermissionsAndroid, Platform } from 'react-native'
 import { types, actions } from '../actions'
 import { main } from '../helpers/state'
 import CallManager from '../helpers/callManager'
 import users from '../helpers/users'
 
-const { concat, of, empty } = Observable
+const { concat, of, empty, merge, fromPromise } = Observable
 const voxClient = Voximplant.getInstance()
 
 export const initialEpic$ = (action$, store) => action$.ofType(types.STARTUP)
-	.switchMap(() => voxEvents$())
+	.switchMap(() => merge(
+		voxEvents$(),
+		notificationHandlers$()
+	))
 
 export const disconnectEpic$ = (action$, store) => action$.ofType(types.DISCONNECT)
 	.do(() => voxClient.disconnect()).ignoreElements()
@@ -45,15 +48,10 @@ export const callEventEpic$ = (action$, store) => action$.ofType(types.CALL_EVEN
 export const incomingCallEpic$ = (action$, store) => action$.ofType(types.VOX_EVENTS_INCOMING_CALL)
 	.do(action => CallManager.setCall(action.payload.handlerArgs.IncomingCall.call))
 	.switchMap(() => voxCallEvents$(CallManager.getCall()))
-	// .ignoreElements()
 
 export const callAnswerEpic$ = (action$, store) => action$.ofType(types.CALL_ANSWER)
 	.do(() => CallManager.getCall().answer())
 	.ignoreElements()
-	// .switchMap(() => merge(
-	// 	// voxCallEvents$(CallManager.getCall()),
-	// 	of(null).do(() => CallManager.getCall().answer()).ignoreElements()
-	// ))
 
 export const authResultEpic$ = (action$, store) => action$.ofType(types.VOX_EVENTS_AUTH_RESULT)
 	.switchMap(action => main.isLoggedIn(store.getState()) ? firebase.messaging().getToken() : empty)
@@ -61,14 +59,61 @@ export const authResultEpic$ = (action$, store) => action$.ofType(types.VOX_EVEN
 	.do(token => token ? voxClient.registerPushNotificationsToken(token) : null)
 	.switchMap(() => firebase.messaging().hasPermission())
 	.switchMap(permission => firebase.messaging().requestPermission())
-	.switchMap(() => PermissionsAndroid.requestMultiple([PermissionsAndroid.PERMISSIONS.RECORD_AUDIO]))
-	.do(granted => granted['android.permission.RECORD_AUDIO'] === 'granted')
-	.do(() => createAndroidCallChannel())
+	.switchMap(() => Platform.OS === 'android'
+		? PermissionsAndroid.requestMultiple([PermissionsAndroid.PERMISSIONS.RECORD_AUDIO])
+		: of(false)
+	)
+	.do(granted => granted === false ? granted : granted['android.permission.RECORD_AUDIO'] === 'granted' )
+	.do(() => {
+		if(Platform.OS === 'android') 
+			createAndroidCallChannel()
+	})
+	.do(() => {
+		const call = CallManager.getCall()
+		if(call){
+			console.log('handling push notification just after AUTH_RESULT')
+			const voximplant = call.data.voximplant
+			voxClient.handlePushNotification({ voximplant })
+		}
+		else{
+			console.log('no need to handle push notification just after AUTH_RESULT')
+		}
+	})
 	.ignoreElements()
 
-const notificationHandlers = () => Observable.create(observer => {
+export const displayLocalNotificationEpic$ = (action$, store) => action$.ofType(types.DISPLAY_LOCAL_NOTIFICATION)
+	.switchMap(action => {
+		const { notification } = action.payload
+		const notif = new firebase.notifications.Notification()
+			.setNotificationId('notificationId')
+			.setTitle(notification.title)
+			.setBody(notification.body)
+			.setData(notification.data)
+			.setSubtitle('subtitle')
+		if(Platform.OS === 'ios')
+			notif.android.setChannelId('call-channel')
+				.android.setSmallIcon('ic_launcher')
+				.android.setVisibility(firebase.notifications.Android.Visibility.Public)
+				.android.addAction(new firebase.notifications.Android.Action('actionaction', 'ic_launcher', 'actionTitle'))
+				.android.setLocalOnly(true)
+				.android.setChannelId('call-channel')
+				.android.setCategory(firebase.notifications.Android.Category.Call)
+				.android.setPriority(firebase.notifications.Android.Priority.High)
+				//.android.setOngoing(true)
+				.android.setLockScreenVisibility
+
+		return firebase.notifications().displayNotification(notif)
+	})
+	.ignoreElements()
+	
+
+
+const notificationHandlers$ = () => Observable.create(observer => {
 	firebase.notifications().onNotification(notification => {
-        console.log('onNotification: ', notification)
+        observer.next(actions.onNotification(notification))
+	})
+	firebase.notifications().onNotificationDisplayed(notification => {
+        observer.next(actions.onNotificationDisplayed(notification))        
     })
 })
 
@@ -142,10 +187,11 @@ const voxEvents$ = () => Observable.create(observer => {
 	})
 
 	voxClient.getClientState().then(state => {
-		console.log('state: ', state)
+		console.log('statee: ', state)
 		if(state === 'disconnected'){
 			voxClient.connect()
-		} else if(state === 'logged_in') {
+		} 
+		else if(state === 'logged_in') {
 			observer.next(actions.voxEventsAuthResult({
 				AuthResult: {
 					displayName: users.getMe().userName, 
