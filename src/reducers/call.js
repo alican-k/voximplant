@@ -1,8 +1,11 @@
-import { compose, assoc, pick } from 'ramda'
+import { compose, assoc, pick, split } from 'ramda'
 import { types } from '../actions'
 
 const initialState = {
 	call 					: null,
+	incoming				: null,
+	callerVoxIncomingData 	: null,
+	duration				: null,
 }
 
 const reducer = (state = initialState, action) => {
@@ -10,12 +13,13 @@ const reducer = (state = initialState, action) => {
 		case types.VOX_INCOMING_CALL: {
 			const callId = action.payload.handlerArgs.IncomingCall.call.callId
 			const currentCallId = Boolean(state.call) ? state.call.callId : false
+			const callerVoxIncomingData = action.payload.handlerArgs.IncomingCall.headers['VI-CallData']
 
 			if(currentCallId && (callId !== currentCallId))
 				return state
 
 			const call = { callId, state: 'ALERTING' }
-			return {...state, call}
+			return {...state, call, incoming: true, callerVoxIncomingData}
 		}
 
 		case types.CALL_ANSWER: {
@@ -29,7 +33,7 @@ const reducer = (state = initialState, action) => {
 				callId: action.payload.call.callId,
 				state: 'PROGRESSING'
 			}
-			return {...state, call}
+			return {...state, call, incoming: false}
 		}
 		case types.CALL_EVENT: {
 			const { name, call } = action.payload.event
@@ -52,6 +56,11 @@ const reducer = (state = initialState, action) => {
 			}
 
 			return {...state, call: callNew}
+		}
+
+		case types.SECOND_ELAPSED: {
+			const { duration } = action.payload
+			return { ...state, duration }
 		}
 
 		default:

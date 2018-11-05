@@ -3,16 +3,17 @@ import { Voximplant } from 'react-native-voximplant'
 import { types, actions } from '../actions'
 import CallManager from '../helpers/callManager'
 
-const { concat, of, empty, merge, fromPromise } = Observable
+const { concat, of, empty, merge, fromPromise, timer } = Observable
 
 const voxClient = Voximplant.getInstance()
 
 export const callRequestEpic$ = (action$, store) => action$.ofType(types.CALL_REQUEST)
-	.switchMap(action => voxClient.call(action.payload.userName, false, 'data->caller:' + action.payload.userName))
+	.switchMap(action => voxClient.call(action.payload.userName, false, store.getState().profile.vox_displayName))
 	.do(call => console.log('call: ', call))
 	.switchMap(call => concat(
 		of(actions.callFulFilled(call))
 			.do(() => CallManager.setCall(call)),
+		of(actions.routeNavigate('Outgoing')),
 		voxCallEvents$(call)
 	))
 
@@ -32,13 +33,33 @@ export const callEventEpic$ = (action$, store) => action$.ofType(types.CALL_EVEN
 			CallManager.setCall(null)
 		} 
 		if(name === 'ProgressToneStart') {
-			CallManager.playCalling()
+			CallManager.playOutgoing()
 		}
-		if(name === 'Disconnected' || name === 'Failed' || name === 'ProgressToneStopped') {
-			CallManager.killCalling()
+		if(name === 'Disconnected' || name === 'Failed' || name === 'ProgressToneStop' || name === 'Connected') {
+			CallManager.killOutgoing()
+			CallManager.killIncoming()
 		}
 	})
-	.ignoreElements()
+	.switchMap(action => {
+		const { name } = action.payload.event
+		return name === 'Disconnected' || name === 'Failed'
+			? of(actions.routeBack())
+			: empty()
+	})
+
+
+const conversationStart$ = action$ => 
+	action$.filter(action => 
+		action.type === types.CALL_EVENT && action.payload.event.name === 'Connected'
+	)
+const conversationEnd$ = action$ => 
+	action$.filter(action => 
+		action.type === types.CALL_EVENT && (action.payload.event.name === 'Disconnected' || action.payload.event.name === 'Failed')
+	)
+
+export const secondElapsedEpic = (action$, store) => conversationStart$(action$)
+	.switchMap(() => timer(0, 1000).takeUntil(conversationEnd$(action$)))
+	.map(actions.secondElapsed)
 
 export const incomingCallEpic$ = (action$, store) => action$.ofType(types.VOX_INCOMING_CALL)
 	.mergeMap(action => {
@@ -49,19 +70,21 @@ export const incomingCallEpic$ = (action$, store) => action$.ofType(types.VOX_IN
 			return empty()
 		} else {
 			CallManager.setCall(incomingCall)
-			return voxCallEvents$(CallManager.getCall())
+			CallManager.playIncoming()
+			return concat(
+				of(actions.routeNavigate('Incoming')),
+				voxCallEvents$(CallManager.getCall())
+			)
 		}
 	})
-	// .do(action => CallManager.setCall(action.payload.handlerArgs.IncomingCall.call))
-	// .switchMap(() => voxCallEvents$(CallManager.getCall()))
 
 export const callAnswerEpic$ = (action$, store) => action$.ofType(types.CALL_ANSWER)
 	.do(() => CallManager.getCall().answer())
 	.ignoreElements()
 
 export const callRejectEpic$ = (action$, store) => action$.ofType(types.CALL_REJECT)
+	.map(() => actions.routeBack())
 	.do(() => CallManager.getCall().decline())
-	.ignoreElements()
 	
 
 const voxCallEvents$ = (call) => Observable.create(observer => {

@@ -32,11 +32,27 @@ export const sendResetEmail = (email) =>
 /* * * * * * * */
 
 const db = firebase.firestore()
+export const profilesRef = () => firebase.firestore().collection(`Vox/db/Profiles`) 
 export const profileRef = () => firebase.firestore().doc(`Vox/db/Profiles/${getUid()}`)
+
 
 export const fromDocRef$ = ref => Observable.create(observer => {
 	const unsubscribe = ref.onSnapshot(doc => {
 		observer.next({id: doc.id, data: doc.data()})
+	})
+
+	return () => {
+		unsubscribe()
+	}
+})
+
+export const fromCollectionRef$ = ref => Observable.create(observer => {
+	const unsubscribe = ref.onSnapshot(snap => {
+		const arr = []
+		snap.forEach(doc => {
+			arr.push({id: doc.id, ...doc.data()})
+		})
+		observer.next(arr)
 	})
 
 	return () => {

@@ -13,13 +13,16 @@ export const types = {
 	SEND_RESET_EMAIL	: 'SEND_RESET_EMAIL',
 	AUTH_ERROR			: 'AUTH_ERROR',
 	CLOSE_AUTH_ERROR	: 'CLOSE_AUTH_ERROR',
+	CHANGE_PAGE			: 'CHANGE_PAGE',
 
 	ROUTE_NAVIGATE		: 'ROUTE_NAVIGATE',
 	ROUTE_RESET			: 'ROUTE_RESET',
 	ROUTE_BACK			: 'ROUTE_BACK',
 
-	PROFILE_CHANGED		: 'PROFILE_CHANGED',
-	SUBMIT_ONBOARDING	: 'SUBMIT_ONBOARDING',
+	PROFILE_IS_SET		: 'PROFILE_IS_SET',
+	PROFILE_IS_NOT_SET	: 'PROFILE_IS_NOT_SET',	
+
+	CONTACTS_FETCHED	: 'CONTACTS_FETCHED',
 
 	VOX_CONNECTION_ESTABLISHED	: 'VOX_CONNECTION_ESTABLISHED',
 	VOX_CONNECTION_CLOSED		: 'VOX_CONNECTION_CLOSED',
@@ -33,27 +36,41 @@ export const types = {
 	CALL_REJECT						: 'CALL_REJECT',
 	CALL_HANGUP_REQUEST				: 'CALL_HANGUP_REQUEST',
 	CALL_EVENT 						: 'CALL_EVENT',
+
+	SECOND_ELAPSED					: 'SECOND_ELAPSED'
 }
 
 export const startup = () => ({ type: 'STARTUP' })
 
-export const loggedIn 		= (user) 					=> ac(types.LOGGED_IN,  {user} )
-export const loggingIn 		= () 						=> ac(types.LOGGING_IN )
+// export const sendResetEmail 	= (email) 					=> ac(types.SEND_RESET_EMAIL,  { email } )
+// export const loggingIn 		= () 						=> ac(types.LOGGING_IN )
+
+export const loggedIn 		= (user) 					=> ac(types.LOGGED_IN,  { user } )
 export const notLoggedIn 	= () 						=> ac(types.NOT_LOGGED_IN )
-export const signUp 		= (email, password) 		=> ac(types.SIGN_UP,  {email, password} )
-//export const signedUp 		= (name) 					=> ac(types.SIGNED_UP,  {name} )
+export const signUp 		= (n, e, p) 					=> {
+	const name = !Boolean(n) ? n : n.trim()	
+	const email = !Boolean(e) ? e : e.trim()
+	const password = !Boolean(p) ? p : p.trim()	
+	return ac(types.SIGN_UP,  {name, email, password} )
+}
 export const logOut 		= () 						=> ac(types.LOG_OUT)
-export const logIn 			= (email, password) 		=> ac(types.LOG_IN,  {email, password} )
-export const sendResetEmail = (email) 					=> ac(types.SEND_RESET_EMAIL,  {email} )
+export const logIn 			= (e, p) 					=> {
+	const email = !Boolean(e) ? e : e.trim()
+	const password = !Boolean(p) ? p : p.trim()	
+	return ac(types.LOG_IN,  {email, password} )
+}
 export const authError 		= (err) 					=> ac(types.AUTH_ERROR, {err} )
 export const closeAuthError = () 						=> ac(types.CLOSE_AUTH_ERROR )
+export const changePage 	= (page) 					=> ac(types.CHANGE_PAGE, { page })
 
 export const routeNavigate 	= (routeName, params = {}) 	=> ac(types.ROUTE_NAVIGATE,  {routeName, params})
 export const routeReset 	= (routeName, params = {}) 	=> ac(types.ROUTE_RESET,  {routeName, params})
 export const routeBack 		= (routeName) 				=> ac(types.ROUTE_BACK,  {routeName})
 
-export const profileChanged		= (profile) 				=> ac(types.PROFILE_CHANGED, { profile })
-export const submitOnboarding	= (name)					=> ac(types.SUBMIT_ONBOARDING, { name })
+export const profileIsSet		= (profile)				=> ac(types.PROFILE_IS_SET, { profile })
+export const profileIsNotSet	= ()					=> ac(types.PROFILE_IS_NOT_SET)
+
+export const contactsFetched 	= (list)				=> ac(types.CONTACTS_FETCHED, { list })
 
 export const voxConnectionEstablished	= (handlerArgs)		=> ac(types.VOX_CONNECTION_ESTABLISHED, { handlerArgs })
 export const voxConnectionClosed		= (handlerArgs)		=> ac(types.VOX_CONNECTION_CLOSED, { handlerArgs })
@@ -68,11 +85,15 @@ export const callAnswer					= () 				=> ac(types.CALL_ANSWER)
 export const callReject					= () 				=> ac(types.CALL_REJECT)
 export const callHangupRequest			= ()				=> ac(types.CALL_HANGUP_REQUEST)
 
+export const secondElapsed				= (duration)		=> ac(types.SECOND_ELAPSED, { duration })
+
 export const actions = {
 	startup,
-	loggedIn, loggingIn, notLoggedIn, signUp, logOut, logIn, sendResetEmail, authError, closeAuthError, 
+	loggedIn, notLoggedIn, signUp, logOut, logIn, authError, closeAuthError, changePage,
 	routeNavigate, routeReset, routeBack,
-	profileChanged, submitOnboarding,
+	profileIsSet, profileIsNotSet,
 	voxConnectionEstablished, voxConnectionClosed, voxConnectionFailed, voxAuthResult, voxIncomingCall,
-	callRequest, callFulFilled, callEvent, callAnswer, callReject, callHangupRequest
+	contactsFetched,
+	callRequest, callFulFilled, callEvent, callAnswer, callReject, callHangupRequest,
+	secondElapsed
 }

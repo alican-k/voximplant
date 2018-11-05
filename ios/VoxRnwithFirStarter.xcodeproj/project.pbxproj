@@ -16,9 +16,11 @@
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* VoxRnwithFirStarterTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* VoxRnwithFirStarterTests.m */; };
+		5A1CDBCA218F9D07006ECDC2 /* libRNSound.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A1CDBC9218F9CF7006ECDC2 /* libRNSound.a */; };
 		5A2E8BF4217F51A20099723D /* libRNFirebase.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A2E8BF3217F51880099723D /* libRNFirebase.a */; };
 		5A4AD7AA21762178002B78F2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5A4AD7A921762178002B78F2 /* GoogleService-Info.plist */; };
-		5ACAB7CB2187AB130005380E /* libRNSound.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5ACAB7CA2187AB080005380E /* libRNSound.a */; };
+		5AC6A534218F542600FEB59C /* incoming.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 5AC6A530218F542500FEB59C /* incoming.mp3 */; };
+		5AC6A535218F542600FEB59C /* outgoing.wav in Resources */ = {isa = PBXBuildFile; fileRef = 5AC6A533218F542600FEB59C /* outgoing.wav */; };
 		5EA667046E9DA28D89632581 /* Pods_VoxRnwithFirStarter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BCDEBF243857F0CD150654B /* Pods_VoxRnwithFirStarter.framework */; };
 /* End PBXBuildFile section */
 
@@ -37,19 +39,19 @@
 			remoteGlobalIDString = 2D02E47A1E0B4A5D006451C7;
 			remoteInfo = "VoxRnwithFirStarter-tvOS";
 		};
+		5A1CDBC8218F9CF7006ECDC2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 5A1CDBC3218F9CF7006ECDC2 /* RNSound.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 19825A1E1BD4A89800EE0337;
+			remoteInfo = RNSound;
+		};
 		5A2E8BF2217F51880099723D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 5A2E8BEE217F51870099723D /* RNFirebase.xcodeproj */;
 			proxyType = 2;
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RNFirebase;
-		};
-		5ACAB7C92187AB080005380E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 5ACAB7C42187AB060005380E /* RNSound.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 19825A1E1BD4A89800EE0337;
-			remoteInfo = RNSound;
 		};
 /* End PBXContainerItemProxy section */
 
@@ -69,10 +71,12 @@
 		2D02E47B1E0B4A5D006451C7 /* VoxRnwithFirStarter-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "VoxRnwithFirStarter-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* VoxRnwithFirStarter-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "VoxRnwithFirStarter-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4031C5D3468A6410BB4016B9 /* Pods-VoxRnwithFirStarter.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VoxRnwithFirStarter.debug.xcconfig"; path = "Pods/Target Support Files/Pods-VoxRnwithFirStarter/Pods-VoxRnwithFirStarter.debug.xcconfig"; sourceTree = "<group>"; };
+		5A1CDBC3218F9CF7006ECDC2 /* RNSound.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNSound.xcodeproj; path = "../node_modules/react-native-sound/RNSound.xcodeproj"; sourceTree = "<group>"; };
 		5A2E8BEE217F51870099723D /* RNFirebase.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNFirebase.xcodeproj; path = "../node_modules/react-native-firebase/ios/RNFirebase.xcodeproj"; sourceTree = "<group>"; };
 		5A4AD7A921762178002B78F2 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5A4AD7B221763C2C002B78F2 /* VoxRnwithFirStarter.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = VoxRnwithFirStarter.entitlements; path = VoxRnwithFirStarter/VoxRnwithFirStarter.entitlements; sourceTree = "<group>"; };
-		5ACAB7C42187AB060005380E /* RNSound.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNSound.xcodeproj; path = "../node_modules/react-native-sound/RNSound.xcodeproj"; sourceTree = "<group>"; };
+		5AC6A530218F542500FEB59C /* incoming.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = incoming.mp3; path = ../android/app/src/main/res/raw/incoming.mp3; sourceTree = "<group>"; };
+		5AC6A533218F542600FEB59C /* outgoing.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = outgoing.wav; path = ../android/app/src/main/res/raw/outgoing.wav; sourceTree = "<group>"; };
 		B7AFA8AA9A1CFD17320E9074 /* Pods-VoxRnwithFirStarter.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VoxRnwithFirStarter.release.xcconfig"; path = "Pods/Target Support Files/Pods-VoxRnwithFirStarter/Pods-VoxRnwithFirStarter.release.xcconfig"; sourceTree = "<group>"; };
 		FBC8C743C046423C960F2237 /* libRNFirebase.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFirebase.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -89,7 +93,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5ACAB7CB2187AB130005380E /* libRNSound.a in Frameworks */,
+				5A1CDBCA218F9D07006ECDC2 /* libRNSound.a in Frameworks */,
 				5A2E8BF4217F51A20099723D /* libRNFirebase.a in Frameworks */,
 				5EA667046E9DA28D89632581 /* Pods_VoxRnwithFirStarter.framework in Frameworks */,
 			);
@@ -144,18 +148,18 @@
 			name = VoxRnwithFirStarter;
 			sourceTree = "<group>";
 		};
-		5A2E8BEF217F51870099723D /* Products */ = {
+		5A1CDBC4218F9CF7006ECDC2 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5A2E8BF3217F51880099723D /* libRNFirebase.a */,
+				5A1CDBC9218F9CF7006ECDC2 /* libRNSound.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		5ACAB7C52187AB060005380E /* Products */ = {
+		5A2E8BEF217F51870099723D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				5ACAB7CA2187AB080005380E /* libRNSound.a */,
+				5A2E8BF3217F51880099723D /* libRNFirebase.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -172,7 +176,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				5ACAB7C42187AB060005380E /* RNSound.xcodeproj */,
+				5A1CDBC3218F9CF7006ECDC2 /* RNSound.xcodeproj */,
 				5A2E8BEE217F51870099723D /* RNFirebase.xcodeproj */,
 			);
 			name = Libraries;
@@ -181,6 +185,8 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				5AC6A530218F542500FEB59C /* incoming.mp3 */,
+				5AC6A533218F542600FEB59C /* outgoing.wav */,
 				5A4AD7A921762178002B78F2 /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* VoxRnwithFirStarter */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
@@ -351,8 +357,8 @@
 					ProjectRef = 5A2E8BEE217F51870099723D /* RNFirebase.xcodeproj */;
 				},
 				{
-					ProductGroup = 5ACAB7C52187AB060005380E /* Products */;
-					ProjectRef = 5ACAB7C42187AB060005380E /* RNSound.xcodeproj */;
+					ProductGroup = 5A1CDBC4218F9CF7006ECDC2 /* Products */;
+					ProjectRef = 5A1CDBC3218F9CF7006ECDC2 /* RNSound.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -366,18 +372,18 @@
 /* End PBXProject section */
 
 /* Begin PBXReferenceProxy section */
+		5A1CDBC9218F9CF7006ECDC2 /* libRNSound.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNSound.a;
+			remoteRef = 5A1CDBC8218F9CF7006ECDC2 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		5A2E8BF3217F51880099723D /* libRNFirebase.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
 			path = libRNFirebase.a;
 			remoteRef = 5A2E8BF2217F51880099723D /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		5ACAB7CA2187AB080005380E /* libRNSound.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNSound.a;
-			remoteRef = 5ACAB7C92187AB080005380E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 /* End PBXReferenceProxy section */
@@ -396,7 +402,9 @@
 			files = (
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
+				5AC6A534218F542600FEB59C /* incoming.mp3 in Resources */,
 				5A4AD7AA21762178002B78F2 /* GoogleService-Info.plist in Resources */,
+				5AC6A535218F542600FEB59C /* outgoing.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -461,6 +469,7 @@
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/GoogleUtilities/GoogleUtilities.framework",
 				"${BUILT_PRODUCTS_DIR}/Protobuf/Protobuf.framework",
+				"${BUILT_PRODUCTS_DIR}/RNSound/RNSound.framework",
 				"${BUILT_PRODUCTS_DIR}/React/React.framework",
 				"${BUILT_PRODUCTS_DIR}/SocketRocket/SocketRocket.framework",
 				"${PODS_ROOT}/VoxImplantSDK/VoxImplant.framework",
@@ -486,6 +495,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleUtilities.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Protobuf.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RNSound.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/React.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SocketRocket.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/VoxImplant.framework",

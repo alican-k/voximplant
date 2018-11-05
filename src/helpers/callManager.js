@@ -1,9 +1,14 @@
 import Sound from 'react-native-sound'
 
 let _call = null
+
 const _sounds = {
 	ringing: null,
 	calling: null
+}
+const _playing = {
+	incoming: false,
+	outgoing: false
 }
 
 const setCall = call => {
@@ -15,9 +20,15 @@ const getCall = () => {
 }
 
 const _play = (name) => () => {
-	if(_sounds[name]) return
+	console.log('check if already ' + name + 'playing')
+	if(_playing[name]) {
+		console.log(name + ' already playing, no need to play')
+		return
+	}
+	_playing[name] = true
+	console.log('No not playing, will be played in a moment')
 
-	const file = name + '.mp3'
+	const file = name === 'incoming' ? 'incoming.mp3' : 'outgoing.wav'
 
 	_sounds[name] = new Sound(file, Sound.MAIN_BUNDLE, error => {
 		if (error) {
@@ -28,34 +39,41 @@ const _play = (name) => () => {
 		_sounds[name].setNumberOfLoops(-1)
 		
 		_sounds[name].play(success => {
-			if(success)
-				console.log(file + 'played successfully')
+			if(success) {
+				console.log(file + 'play finished successfully')
+			}
 			else {
 				console.log(file + 'playback failed due to audio decoding errors')
 				_sounds[name].reset()
 			}
 		})
+		_playing[name] = true
 	})
 }
 const _kill = (name) => () => {
-	if(!Boolean(_sounds[name])) return
+	console.log('check if ' + name + ' needs to be stopped')
+	if(!Boolean(_playing[name])) {
+		console.log('no need to stop:', _playing)
+		return
+	}
+	 console.log('yes ' + name + ' needs to be stopped')
 
 	_sounds[name].stop(() => {
 		console.log(name + ' stopped')
-		_sounds[name].release()
-		_sounds[name] = null
+		_sounds[name] && _sounds[name].release()
+		_playing[name] = false
 	})
 }
 
-const playCalling = _play('calling')
-const killCalling = _kill('calling')
+const playOutgoing = _play('outgoing')
+const killOutgoing = _kill('outgoing')
 
-const playRinging = _play('ringing')
-const killRinging = _kill('ringing')
+const playIncoming = _play('incoming')
+const killIncoming = _kill('incoming')
 
 
 
 export default {
 	setCall, getCall,
-	playRinging, killRinging, playCalling, killCalling
+	playIncoming, killIncoming, playOutgoing, killOutgoing
 }
